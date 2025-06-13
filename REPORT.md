@@ -86,9 +86,11 @@ To establish a simple yet effective classification baseline, we trained a **Ridg
 
 - **Accuracy**: 0.7596
 - **Confusion matrix**:
-[[3866 679 455]
-[ 641 3481 878]
-[ 256 697 4047]]
+|       |       |       |
+| :---: | :---: | :---: |
+| 3866  | 679   | 455   |
+| 641   | 3481  | 878   |
+| 256   | 697   | 4047  |
 
 This performance reflects the classifier's ability to fit the training data but does not account for generalization.
 
@@ -98,10 +100,11 @@ This performance reflects the classifier's ability to fit the training data but 
 - **Mean CV Accuracy**: 0.7445
 - **Overall CV Accuracy**: 0.7412
 - **Confusion Matrix** (CV):
-[[3781 738 481]
-[ 670 3381 949]
-[ 283 761 3956]]
-
+|      |      |      |
+| :--: | :--: | :--: |
+| 3781 | 738  | 481  |
+| 670  | 3381 | 949  |
+| 283  | 761  | 3956 |
 #### Why Cross-Validation Matters
 
 Cross-validation provides a **more reliable estimate** of a classifier’s ability to generalize. The data splits used in CV simulate unseen data, and the averaged results approximate the classifier’s expected performance on **independent and identically distributed (i.i.d.) test data**.
