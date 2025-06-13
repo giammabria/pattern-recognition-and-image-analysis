@@ -78,12 +78,70 @@ While PCA was not always beneficial for classification performance in later labs
 
 ---
 
+### Ridge Classifier Baseline Performance
+
+To establish a simple yet effective classification baseline, we trained a **Ridge Classifier** using the standardized HoG features.
+
+#### Training Performance
+
+- **Accuracy**: 0.7596
+- **Confusion matrix**:
+[[3866 679 455]
+[ 641 3481 878]
+[ 256 697 4047]]
+
+This performance reflects the classifier's ability to fit the training data but does not account for generalization.
+
+#### Predictive Performance (5-Fold Cross-Validation)
+
+- **Fold Accuracies**: [0.7403, 0.7387, 0.7413, 0.7547, 0.7473]
+- **Mean CV Accuracy**: 0.7445
+- **Overall CV Accuracy**: 0.7412
+- **Confusion Matrix** (CV):
+[[3781 738 481]
+[ 670 3381 949]
+[ 283 761 3956]]
+
+#### Why Cross-Validation Matters
+
+Cross-validation provides a **more reliable estimate** of a classifier’s ability to generalize. The data splits used in CV simulate unseen data, and the averaged results approximate the classifier’s expected performance on **independent and identically distributed (i.i.d.) test data**.
+
+This is crucial, because:
+
+> A learning algorithm generalizes well if it returns accurate predictions for i.i.d. test data — that is, input/output pairs drawn from the same distribution as the training set but independent of it.
+
+Training accuracy can be **overoptimistic**, especially in high-dimensional spaces. In contrast, **CV accuracy is a better estimator of the true generalization error**.
+
+### Hyperparameter Tuning and Statistical Comparison
+
+To further improve performance, we used `cross_val_score` from `scikit-learn` to tune the Ridge regularization hyperparameter **α**:
+
+- **Best α**: 0.1
+- **Best mean CV accuracy**: 0.744
+
+#### Test Set Performance Comparison
+
+| RidgeClassifier | Accuracy (%) |
+|-----------------|--------------|
+| Default (α=1.0) | 72.90        |
+| Tuned (α=0.1)   | 74.00        |
+
+While the improvement seems small, we validated it using **McNemar’s Test**:
+
+- **χ²** = 4.995, **p** = 0.025 (significant at p < 0.05)
+
+**We reject the null hypothesis of equal performance.**
+
+This result shows that the tuned Ridge Classifier with α=0.1 **outperforms the default model in a statistically significant way**.
+
+---
+
 ### Summary and Justification for Preprocessing
 
-- **Standardization** is essential to prepare the data for most machine learning models.
-- **PCA** allows dimensionality reduction with minimal variance loss and may improve computational efficiency.
-- The initial exploration validates the appropriateness of both steps before training any model.
-
+- **Standardization** is essential for optimal classifier behavior.
+- **PCA** reduces noise and dimensionality with minimal variance loss.
+- **Ridge classification** serves as a strong linear baseline.
+- **Cross-validation** and **statistical testing** are key to evaluating model improvements and ensuring generalization.
 
 ---
 
