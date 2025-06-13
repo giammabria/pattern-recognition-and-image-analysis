@@ -31,6 +31,8 @@ We started with an examination of the raw HoG features. A bar plot of the HoG ve
 - The values span a range from near-zero to a maximum of approximately 0.0175.
 - The dataset is **not centered around the origin**, which may hinder performance for classifiers that assume zero-mean data (e.g., SVMs, neural networks).
 
+<img src="./images/hog-values-sample0.png" alt="Description" width="300"/>
+
 ![HoG Sample 0 Vector](./images/hog-values-sample0.png)
 
 #### Feature Distribution by Index
@@ -85,13 +87,6 @@ To establish a simple yet effective classification baseline, we trained a **Ridg
 #### Training Performance
 
 - **Accuracy**: 0.7596
-- **Confusion matrix**:
-
-|       |       |       |
-| :---: | :---: | :---: |
-| 3866  | 679   | 455   |
-| 641   | 3481  | 878   |
-| 256   | 697   | 4047  |
 
 This performance reflects the classifier's ability to fit the training data but does not account for generalization.
 
@@ -100,13 +95,6 @@ This performance reflects the classifier's ability to fit the training data but 
 - **Fold Accuracies**: [0.7403, 0.7387, 0.7413, 0.7547, 0.7473]
 - **Mean CV Accuracy**: 0.7445
 - **Overall CV Accuracy**: 0.7412
-- **Confusion Matrix** (CV):
-
-|      |      |      |
-| :--: | :--: | :--: |
-| 3781 | 738  | 481  |
-| 670  | 3381 | 949  |
-| 283  | 761  | 3956 |
 
 #### Why Cross-Validation Matters
 
