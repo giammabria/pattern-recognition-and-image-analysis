@@ -31,7 +31,7 @@ We started with an examination of the raw HoG features. A bar plot of the HoG ve
 - The values span a range from near-zero to a maximum of approximately 0.0175.
 - The dataset is **not centered around the origin**, which may hinder performance for classifiers that assume zero-mean data (e.g., SVMs, neural networks).
 
-![HoG Sample 0 Vector](./e2cd12fa-4e17-41c5-b02a-bcb7f4767243.png)
+![HoG Sample 0 Vector](./images/hog-values-sample0.png)
 
 #### Feature Distribution by Index
 
@@ -41,7 +41,7 @@ We then visualized the distributions for three sample HoG features: #0, #50, and
 - Long-tailed distribution, indicating sparse activation in gradient space.
 - Implies that many HoG features may carry minimal information individually.
 
-![HoG Feature Histograms](./79038d4c-3863-42ab-a569-0239bf4ec723.png)
+![HoG Feature Histograms](./images/hist-hog-features.png)
 
 #### Global Feature Statistics
 
@@ -61,23 +61,28 @@ A correlation heatmap across the 256 HoG features revealed:
 - Some **visible block-structured correlation patterns**, likely arising from spatial contiguity in the HoG descriptor.
 - However, many features remain relatively uncorrelated, which is promising for dimensionality reduction techniques like PCA.
 
-![HoG Correlation Matrix](./948b3512-209f-4b14-b78a-d20e3543fe8c.png)
+![HoG Correlation Matrix](./images/corr-matrix-hog.png)
 
 ### PCA for Dimensionality Reduction
 
-To better understand the intrinsic dimensionality of the data, we applied **Principal Component Analysis (PCA)**:
+We applied **Principal Component Analysis (PCA)** to the standardized HoG data to explore and potentially reduce the feature space:
 
-- PCA was used to **reduce to 2D** for visualization.
-- While it helped visualize class clusters to some extent, **significant overlap remained**, suggesting the classes are not linearly separable in the top-variance dimensions.
-- Nevertheless, PCA helps to:
-  - Remove redundancy.
-  - Reduce computational cost.
-  - Improve performance for some algorithms (e.g., SVM with linear kernel).
+- PCA helps decorrelate features and reduce noise.
+- The **explained variance curve** shows that:
+  - **183 components** capture **≥90%** of the total variance.
+  - This represents a **~29% dimensionality reduction** (from 256 to 183 dimensions).
+
+![Cumulative Explained Variance](./images/cum-exp-var-pca.png)
+
+While PCA was not always beneficial for classification performance in later labs (especially for SVM with RBF kernel), it remains a useful tool for visual analysis and may assist models that suffer from high-dimensional noise.
+
+---
 
 ### Summary and Justification for Preprocessing
 
-- **Standardization** is essential before applying most ML models to ensure optimal convergence and fairness in feature weighting.
-- **PCA**, while not perfect for classification, may still assist in reducing noise and improving generalization, especially when combined with models that benefit from decorrelated input (e.g., SVM).
+- **Standardization** is essential to prepare the data for most machine learning models.
+- **PCA** allows dimensionality reduction with minimal variance loss and may improve computational efficiency.
+- The initial exploration validates the appropriateness of both steps before training any model.
 
 
 ---
