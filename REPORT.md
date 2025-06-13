@@ -31,9 +31,7 @@ We started with an examination of the raw HoG features. A bar plot of the HoG ve
 - The values span a range from near-zero to a maximum of approximately 0.0175.
 - The dataset is **not centered around the origin**, which may hinder performance for classifiers that assume zero-mean data (e.g., SVMs, neural networks).
 
-<img src="./images/hog-values-sample0.png" alt="Description" width="300"/>
-
-![HoG Sample 0 Vector](./images/hog-values-sample0.png)
+<img src="./images/hog-values-sample0.png" alt="Description" width="500"/>
 
 #### Feature Distribution by Index
 
@@ -43,7 +41,7 @@ We then visualized the distributions for three sample HoG features: #0, #50, and
 - Long-tailed distribution, indicating sparse activation in gradient space.
 - Implies that many HoG features may carry minimal information individually.
 
-![HoG Feature Histograms](./images/hist-hog-features.png)
+<img src="./images/hist-hog-features.png" alt="Description" width="500"/>
 
 #### Global Feature Statistics
 
@@ -54,7 +52,7 @@ To get a sense of variability and bias across features:
 
 This confirms the need for **standardization (mean 0, variance 1)** prior to applying many ML methods.
 
-![Mean and Std of HoG Features](./images/dist-hog-mean-std.png)
+<img src="./images/dist-hog-mean-std.png" alt="Description" width="500"/>
 
 #### Feature Correlation
 
@@ -63,7 +61,7 @@ A correlation heatmap across the 256 HoG features revealed:
 - Some **visible block-structured correlation patterns**, likely arising from spatial contiguity in the HoG descriptor.
 - However, many features remain relatively uncorrelated, which is promising for dimensionality reduction techniques like PCA.
 
-![HoG Correlation Matrix](./images/corr-matrix-hog.png)
+<img src="./images/corr-matrix-hog.png" alt="Description" width="500"/>
 
 ### PCA for Dimensionality Reduction
 
@@ -74,7 +72,7 @@ We applied **Principal Component Analysis (PCA)** to the standardized HoG data t
   - **183 components** capture **≥90%** of the total variance.
   - This represents a **~29% dimensionality reduction** (from 256 to 183 dimensions).
 
-![Cumulative Explained Variance](./images/cum-exp-var-pca.png)
+<img src="./images/cum-exp-var-pca.png" alt="Description" width="500"/>
 
 While PCA was not always beneficial for classification performance in later labs (especially for SVM with RBF kernel), it remains a useful tool for visual analysis and may assist models that suffer from high-dimensional noise.
 
