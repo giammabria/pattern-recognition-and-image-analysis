@@ -52,7 +52,7 @@ To get a sense of variability and bias across features:
 
 This confirms the need for **standardization (mean 0, variance 1)** prior to applying many ML methods.
 
-![Mean and Std of HoG Features](./832ce774-7a89-49c5-a810-d4549391c3b6.png)
+![Mean and Std of HoG Features](./images/dist-hog-mean-std.png)
 
 #### Feature Correlation
 
@@ -86,6 +86,7 @@ To establish a simple yet effective classification baseline, we trained a **Ridg
 
 - **Accuracy**: 0.7596
 - **Confusion matrix**:
+
 |       |       |       |
 | :---: | :---: | :---: |
 | 3866  | 679   | 455   |
@@ -100,11 +101,13 @@ This performance reflects the classifier's ability to fit the training data but 
 - **Mean CV Accuracy**: 0.7445
 - **Overall CV Accuracy**: 0.7412
 - **Confusion Matrix** (CV):
+
 |      |      |      |
 | :--: | :--: | :--: |
 | 3781 | 738  | 481  |
 | 670  | 3381 | 949  |
 | 283  | 761  | 3956 |
+
 #### Why Cross-Validation Matters
 
 Cross-validation provides a **more reliable estimate** of a classifier’s ability to generalize. The data splits used in CV simulate unseen data, and the averaged results approximate the classifier’s expected performance on **independent and identically distributed (i.i.d.) test data**.
