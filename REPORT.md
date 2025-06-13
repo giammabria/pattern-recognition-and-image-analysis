@@ -6,7 +6,7 @@ This report summarizes the methodologies, preprocessing techniques, validations,
 
 ---
 
-## Lab 0: Introduction to the Dataset and PCA Preprocessing
+## Lab 0: Introduction to the Dataset and Preprocessing
 
 ### Dataset Overview
 
@@ -137,28 +137,138 @@ This result shows that the tuned Ridge Classifier with α=0.1 **outperforms the 
 
 ---
 
-## Lab 1: k-Nearest Neighbors (k-NN) and Decision Trees
+## Lab 1: k-Nearest Neighbors, Decision Trees and Random Forest
 
-### Methodologies:
-- **k-NN Classifier**: Used L2 distance with varying values of `k`.
-- **Decision Tree**: Built based on entropy and information gain.
+All models in this lab were trained on **standardized HoG features** to ensure proper distance-based behavior and fair feature weighting.
 
-### Preprocessing:
-- **Normalization**: HoG features were normalized to zero mean and unit variance for k-NN.
-- No explicit feature engineering for Decision Trees.
+---
 
-### Validation:
-- **Holdout validation** (train/test split).
-- **Cross-validation** was used to tune `k` for k-NN.
+### K-Nearest Neighbors (K-NN)
 
-### Results:
-- k-NN: Accuracy decreased for large `k` due to oversmoothing; small `k` led to overfitting.
-- Decision Trees: Performance improved with pruning to reduce overfitting.
+**Initial Results:**
 
-### Insights:
-- Normalization critical for distance-based methods (k-NN).
-- Decision Trees require fewer assumptions but may overfit without pruning.
-- k-NN sensitive to noisy data and dimensionality.
+- **Training Accuracy**: 84.75%
+
+**Cross-Validation (5-fold):**
+
+- **Fold Accuracies**: [0.782, 0.7927, 0.792, 0.783, 0.7843]
+- **Mean CV Accuracy**: 0.7868
+- **Overall CV Accuracy**: 0.7859
+
+We performed hyperparameter tuning by evaluating accuracy over different `k` values:
+
+<img src="./images/knn-neighbors.png" width="500"/>
+
+**Final Test Set Performance:**
+
+- **Accuracy**: 78.97%
+
+| Class | Precision | Recall | F1-Score | Support |
+| :--- | :---: | :---: | :---: | :---: |
+| Airplane | 0.88 | 0.78 | 0.83 | 1000 |
+| Bird | 0.70 | 0.79 | 0.74 | 1000 |
+| Horse | 0.82 | 0.80 | 0.81 | 1000 |
+
+**Comments:**  
+K-NN achieved the **highest test accuracy**. Performance was stable and errors were well-distributed across classes. Slight overfitting was observed, but it generalizes well overall.
+
+---
+
+### Decision Tree
+
+**Initial Results:**
+
+- **Training Accuracy**: 66.91%
+
+**Cross-Validation (5-fold):**
+
+- **Mean CV Accuracy**: 0.5970
+- **Overall CV Accuracy**: 0.5963
+
+After tuning, we found the best parameters:
+
+```python
+{'criterion': 'gini', 'max_depth': 10, 'max_features': None}
+```
+
+**Final Test Set Performance:**
+
+- **Accuracy**: 60.17%
+
+| Class | Precision | Recall | F1-Score | Support |
+| :--- | :---: | :---: | :---: | :---: |
+| Airplane | 0.74 | 0.60 | 0.66 | 1000 |
+| Bird | 0.52 | 0.62 | 0.57 | 1000 |
+| Horse | 0.58 | 0.58 | 0.58 | 1000 |
+
+**Comments:**  
+The decision tree **underfits the data**, struggling to capture decision boundaries. It performs below all other models and serves only as a basic baseline.
+
+---
+
+### Random Forest
+
+**Initial Results:**
+
+- **OOB Score**: 0.7401 (OOB = Out-of-Bag)
+- **Training Accuracy**: 100%
+
+**Cross-Validation (5-fold):**
+
+- **Fold Accuracies**: [0.7593, 0.7463, 0.7593, 0.7617, 0.761]
+- **Mean CV Accuracy**: 0.7575  
+- **Overall CV Accuracy**: 0.7563
+
+> **OOB Score Importance**:  
+> OOB scoring allows performance estimation without needing a separate validation set. It uses the bootstrap-resampled data to train each tree and estimates accuracy using the samples that weren’t included. This provides a built-in, low-cost approximation of generalization performance — especially valuable when data is limited.
+
+We tuned `n_estimators` and `max_depth`:
+
+<img src="./images/rf-matrix-estimators-depth.png" width="500"/>
+
+**Final Test Set Performance:**
+
+- **Accuracy**: 74.87%
+
+| Class | Precision | Recall | F1-Score | Support |
+| :--- | :---: | :---: | :---: | :---: |
+| Airplane | 0.81 | 0.75 | 0.78 | 1000 |
+| Bird | 0.67 | 0.71 | 0.69 | 1000 |
+| Horse | 0.78 | 0.78 | 0.78 | 1000 |
+
+
+**Comments:**  
+The Random Forest model generalizes better than a single decision tree and is more stable. However, due to its perfect training accuracy, it exhibits **overfitting**, with a ~19% performance gap between training and test accuracy.
+
+---
+
+### Model Comparison Summary
+
+| Model                | Train Acc | CV Acc  | Test Acc | Train-Test Gap |
+|----------------------|-----------|---------|----------|----------------|
+| K-Nearest Neighbors  | 84.75%    | 78.53%  | 78.97%   | ~5.8 pp        |
+| Decision Tree        | 66.91%    | 59.39%  | 60.17%   | ~6.7 pp        |
+| Random Forest        | 93.40%    | 74.24%  | 74.23%   | ~19.2 pp       |
+
+---
+
+### Key Takeaways
+
+- **K-Nearest Neighbors**
+  - Best generalization (Test Acc ~79%).
+  - Low overfitting.
+  - Balanced performance across classes.
+
+- **Decision Tree**
+  - Underfits the data.
+  - Weak baseline classifier.
+
+- **Random Forest**
+  - Learns richer patterns than a single tree.
+  - Better performance than Decision Tree but overfits more than K-NN.
+
+**Conclusion**:  
+Among all three models, **K-NN shows the best trade-off between training accuracy, generalization, and test performance**, making it the most effective model in this lab based on HoG features.
 
 ---
 
