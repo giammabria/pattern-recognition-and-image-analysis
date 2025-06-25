@@ -1,4 +1,4 @@
-# Machine Learning for Pattern-recognition-and-image-analysis
+# Machine Learning for Pattern Recognition and Image Analysis
 
 ## Introduction
 
